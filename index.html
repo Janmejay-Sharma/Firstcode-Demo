@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Village Milk Management</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #121b2f;
+        --card2: #0f172a;
+        --text: #e8eefc;
+        --muted: #a8b3d6;
+        --accent: #7c5cff;
+        --accent2: #22c55e;
+        --danger: #ef4444;
+        --warn: #f59e0b;
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --radius: 18px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        background: radial-gradient(
+            1200px 800px at 20% 10%,
+            rgba(124, 92, 255, 0.25),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 700px at 80% 20%,
+            rgba(34, 197, 94, 0.2),
+            transparent 55%
+          ),
+          var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 22px;
+      }
+      header {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--accent), #34d399);
+        box-shadow: var(--shadow);
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 2px;
+      }
+      .top-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .pill {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        border-radius: 999px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      input,
+      select,
+      button,
+      textarea {
+        font: inherit;
+        color: var(--text);
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        padding: 11px 12px;
+        border-radius: 12px;
+        outline: none;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(124, 92, 255, 0.65);
+        box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.18);
+      }
+      button {
+        border: 0;
+        padding: 11px 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        transition: 0.15s transform ease, 0.15s opacity ease;
+      }
+      button:hover {
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), #5eead4);
+        border: 0;
+      }
+      .btn-green {
+        background: linear-gradient(135deg, var(--accent2), #86efac);
+        border: 0;
+        color: #04210f;
+      }
+      .btn-danger {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+      }
+      .btn-warn {
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+      }
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 360px 1fr;
+      }
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .card .head {
+        padding: 14px 14px 10px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .card .head h2 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .card .head .hint {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .card .body {
+        padding: 14px;
+      }
+      .row {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 1fr 1fr;
+      }
+      .row-1 {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 1fr;
+      }
+      .mt {
+        margin-top: 10px;
+      }
+      .stats {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(4, 1fr);
+      }
+      @media (max-width: 980px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      .stat {
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 12px;
+      }
+      .stat .k {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .stat .v {
+        font-size: 18px;
+        margin-top: 6px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: auto;
+      }
+      th,
+      td {
+        padding: 10px 10px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        font-size: 13px;
+        vertical-align: top;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        background: rgba(10, 16, 30, 0.92);
+        backdrop-filter: blur(8px);
+      }
+      .tag {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        padding: 5px 9px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .right {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .mini {
+        padding: 8px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .flex {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .grow {
+        flex: 1;
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.65);
+        border: 1px solid var(--border);
+        padding: 10px 14px;
+        border-radius: 999px;
+        color: var(--text);
+        font-size: 13px;
+        display: none;
+      }
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <h1>Village Milk Management</h1>
+            <div class="sub">
+              Milk entry, paisa calculation, monthly report — sab ek jagah.
+            </div>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <div class="pill" style="min-width: 260px">
+            <span class="tag">🔎 Search</span>
+            <input
+              id="searchInput"
+              placeholder="Naam se search (e.g. Ramesh)"
+            />
+          </div>
+
+          <div class="pill">
+            <span class="tag">📅 Month</span>
+            <input id="monthInput" type="month" />
+          </div>
+
+          <button class="btn-warn" id="btnClearFilter" title="Filter reset">
+            Reset
+          </button>
+        </div>
+      </header>
+
+      <div class="grid">
+        <!-- LEFT: Forms -->
+        <div class="card">
+          <div class="head">
+            <div>
+              <h2>➕ New Milk Entry</h2>
+              <div class="hint">Daily entry add karo (auto paisa banega)</div>
+            </div>
+            <span class="tag">Saved ✅</span>
+          </div>
+          <div class="body">
+            <div class="row">
+              <div>
+                <label class="note">Date</label>
+                <input id="dateInput" type="date" />
+              </div>
+              <div>
+                <label class="note">Member Name</label>
+                <select id="nameSelect"></select>
+              </div>
+            </div>
+
+            <div class="row mt">
+              <div>
+                <label class="note">Milk (Liters)</label>
+                <input
+                  id="litersInput"
+                  type="number"
+                  step="0.01"
+                  placeholder="e.g. 3.5"
+                />
+              </div>
+              <div>
+                <label class="note">Rate (₹/Liter)</label>
+                <input
+                  id="rateInput"
+                  type="number"
+                  step="0.01"
+                  placeholder="e.g. 55"
+                />
+              </div>
+            </div>
+
+            <div class="row mt">
+              <div>
+                <label class="note">Amount (₹) — auto</label>
+                <input id="amountInput" type="number" step="0.01" disabled />
+              </div>
+              <div>
+                <label class="note">Notes (optional)</label>
+                <input id="noteInput" placeholder="e.g. morning milk" />
+              </div>
+            </div>
+
+            <div class="row-1 mt">
+              <button class="btn-primary" id="btnAddEntry">Add Entry</button>
+              <div class="note">
+                Tip: Naam add nahi hai? नीचे “Add Member” से पहले नाम जोड़ो.
+              </div>
+            </div>
+
+            <hr
+              style="
+                border: 0;
+                border-top: 1px solid var(--border);
+                margin: 14px 0;
+              "
+            />
+
+            <div class="row-1">
+              <div class="flex">
+                <div class="grow">
+                  <div style="font-weight: 700">👤 Add Member</div>
+                  <div class="note">
+                    Village ka member/customer name add karo
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <input
+                  id="memberNameInput"
+                  placeholder="New member name (e.g. Sita)"
+                />
+                <button class="btn-green" id="btnAddMember">Add</button>
+              </div>
+            </div>
+
+            <hr
+              style="
+                border: 0;
+                border-top: 1px solid var(--border);
+                margin: 14px 0;
+              "
+            />
+
+            <div class="row-1">
+              <div style="font-weight: 700">💰 Payment (Paid) Add</div>
+              <div class="note">
+                Member ne paisa diya? yahan add karo, dues auto show hoga.
+              </div>
+              <div class="row">
+                <select id="payNameSelect"></select>
+                <input
+                  id="payAmountInput"
+                  type="number"
+                  step="0.01"
+                  placeholder="Paid amount ₹"
+                />
+              </div>
+              <button class="btn-green" id="btnAddPayment">Add Payment</button>
+            </div>
+
+            <hr
+              style="
+                border: 0;
+                border-top: 1px solid var(--border);
+                margin: 14px 0;
+              "
+            />
+
+            <div class="row-1">
+              <div style="font-weight: 700">📦 Backup</div>
+              <div class="note">
+                Export se file download hoti hai, Import se data wapas aa
+                jayega.
+              </div>
+              <div class="row">
+                <button id="btnExport">Export JSON</button>
+                <label style="display: flex; gap: 10px; align-items: center">
+                  <input
+                    id="importFile"
+                    type="file"
+                    accept="application/json"
+                    style="display: none"
+                  />
+                  <button id="btnImport">Import JSON</button>
+                </label>
+              </div>
+              <button class="btn-danger" id="btnResetAll">
+                Reset All Data
+              </button>
+              <div class="note">
+                Shortcut: <span class="kbd">Ctrl</span> +
+                <span class="kbd">S</span> (browser save nahi — bas fun 😄)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Reports -->
+        <div class="card">
+          <div class="head">
+            <div>
+              <h2>📊 Monthly Report / Dashboard</h2>
+              <div class="hint">Month filter + search dono apply hote hain</div>
+            </div>
+            <div class="right">
+              <span class="tag" id="activeFilterTag">All data</span>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="stats" id="statsBox">
+              <!-- injected -->
+            </div>
+
+            <div
+              class="mt"
+              style="
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <div class="note">
+                नीचे entries list है. किसी entry को delete करना हो तो delete बटन
+                दबाओ.
+              </div>
+              <div class="right">
+                <button class="mini" id="btnSortDate">Sort: Date</button>
+                <button class="mini" id="btnSortName">Sort: Name</button>
+                <button class="mini" id="btnSortAmount">Sort: Amount</button>
+              </div>
+            </div>
+
+            <div
+              class="mt"
+              style="
+                overflow: auto;
+                border: 1px solid var(--border);
+                border-radius: 16px;
+              "
+            >
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Liters</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Notes</th>
+                    <th style="text-align: right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="entriesTbody"></tbody>
+              </table>
+            </div>
+
+            <div
+              class="mt"
+              style="
+                display: grid;
+                gap: 12px;
+                grid-template-columns: 1.3fr 0.7fr;
+              "
+            >
+              <div
+                class="card"
+                style="background: rgba(0, 0, 0, 0.12); box-shadow: none"
+              >
+                <div class="head">
+                  <div>
+                    <h2>👥 Member Summary</h2>
+                    <div class="hint">Total, Paid, Dues (baki) — name wise</div>
+                  </div>
+                </div>
+                <div class="body" style="padding: 0">
+                  <div style="overflow: auto">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Total (₹)</th>
+                          <th>Paid (₹)</th>
+                          <th>Dues (₹)</th>
+                        </tr>
+                      </thead>
+                      <tbody id="memberTbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="card"
+                style="background: rgba(0, 0, 0, 0.12); box-shadow: none"
+              >
+                <div class="head">
+                  <div>
+                    <h2>🧮 Quick Calculator</h2>
+                    <div class="hint">Liters × Rate = Amount</div>
+                  </div>
+                </div>
+                <div class="body">
+                  <div class="row">
+                    <input
+                      id="qLit"
+                      type="number"
+                      step="0.01"
+                      placeholder="Liters"
+                    />
+                    <input
+                      id="qRate"
+                      type="number"
+                      step="0.01"
+                      placeholder="Rate"
+                    />
+                  </div>
+                  <div class="row mt">
+                    <input
+                      id="qAmt"
+                      type="number"
+                      step="0.01"
+                      disabled
+                      placeholder="Amount ₹"
+                    />
+                    <button class="btn-primary" id="btnCalc">Calculate</button>
+                  </div>
+                  <div class="note mt">
+                    Yeh calculator independent hai — entries me add nahi hota.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <script>
+      // ========== Storage Keys ==========
+      const LS_KEY = "milk_mgmt_v1";
+
+      // ========== State ==========
+      let state = loadState();
+      let currentSort = { key: "date", dir: "desc" }; // default newest first
+
+      // ========== Elements ==========
+      const nameSelect = document.getElementById("nameSelect");
+      const payNameSelect = document.getElementById("payNameSelect");
+
+      const dateInput = document.getElementById("dateInput");
+      const litersInput = document.getElementById("litersInput");
+      const rateInput = document.getElementById("rateInput");
+      const amountInput = document.getElementById("amountInput");
+      const noteInput = document.getElementById("noteInput");
+
+      const memberNameInput = document.getElementById("memberNameInput");
+      const payAmountInput = document.getElementById("payAmountInput");
+
+      const searchInput = document.getElementById("searchInput");
+      const monthInput = document.getElementById("monthInput");
+      const btnClearFilter = document.getElementById("btnClearFilter");
+
+      const entriesTbody = document.getElementById("entriesTbody");
+      const memberTbody = document.getElementById("memberTbody");
+      const statsBox = document.getElementById("statsBox");
+      const activeFilterTag = document.getElementById("activeFilterTag");
+
+      const toastEl = document.getElementById("toast");
+
+      // Buttons
+      document
+        .getElementById("btnAddEntry")
+        .addEventListener("click", addEntry);
+      document
+        .getElementById("btnAddMember")
+        .addEventListener("click", addMember);
+      document
+        .getElementById("btnAddPayment")
+        .addEventListener("click", addPayment);
+
+      document
+        .getElementById("btnExport")
+        .addEventListener("click", exportJSON);
+      document
+        .getElementById("btnImport")
+        .addEventListener("click", () =>
+          document.getElementById("importFile").click()
+        );
+      document
+        .getElementById("importFile")
+        .addEventListener("change", importJSON);
+
+      document
+        .getElementById("btnResetAll")
+        .addEventListener("click", resetAll);
+
+      document
+        .getElementById("btnSortDate")
+        .addEventListener("click", () => setSort("date"));
+      document
+        .getElementById("btnSortName")
+        .addEventListener("click", () => setSort("name"));
+      document
+        .getElementById("btnSortAmount")
+        .addEventListener("click", () => setSort("amount"));
+
+      // Quick calc
+      document.getElementById("btnCalc").addEventListener("click", () => {
+        const l = parseFloat(document.getElementById("qLit").value || "0");
+        const r = parseFloat(document.getElementById("qRate").value || "0");
+        document.getElementById("qAmt").value = round2(l * r);
+      });
+
+      // Live calculate amount in entry form
+      litersInput.addEventListener("input", autoAmount);
+      rateInput.addEventListener("input", autoAmount);
+
+      // Filters
+      searchInput.addEventListener("input", renderAll);
+      monthInput.addEventListener("change", renderAll);
+      btnClearFilter.addEventListener("click", () => {
+        searchInput.value = "";
+        monthInput.value = "";
+        renderAll();
+        showToast("Filter reset ✅");
+      });
+
+      // Init defaults
+      dateInput.value = new Date().toISOString().slice(0, 10);
+
+      // Setup initial members if empty
+      if (!state.members || state.members.length === 0) {
+        state.members = ["Default"];
+        saveState();
+      }
+
+      // Initial render
+      refreshMemberSelects();
+      renderAll();
+
+      // ========== Functions ==========
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(LS_KEY);
+          if (!raw)
+            return {
+              members: [],
+              entries: [], // {id, date, name, liters, rate, amount, note}
+              payments: [], // {id, date, name, amount}
+            };
+          return JSON.parse(raw);
+        } catch (e) {
+          return { members: [], entries: [], payments: [] };
+        }
+      }
+
+      function saveState() {
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+      }
+
+      function uid() {
+        return (
+          Math.random().toString(16).slice(2) + "-" + Date.now().toString(16)
+        );
+      }
+
+      function round2(n) {
+        return Math.round((n + Number.EPSILON) * 100) / 100;
+      }
+
+      function autoAmount() {
+        const liters = parseFloat(litersInput.value || "0");
+        const rate = parseFloat(rateInput.value || "0");
+        amountInput.value = round2(liters * rate);
+      }
+
+      function addMember() {
+        const name = (memberNameInput.value || "").trim();
+        if (!name) return showToast("Name blank hai ❌");
+        if (state.members.some((m) => m.toLowerCase() === name.toLowerCase())) {
+          return showToast("Ye name already hai ⚠️");
+        }
+        state.members.push(name);
+        state.members.sort((a, b) => a.localeCompare(b));
+        memberNameInput.value = "";
+        saveState();
+        refreshMemberSelects();
+        renderAll();
+        showToast("Member add ho gaya ✅");
+      }
+
+      function refreshMemberSelects() {
+        const current = nameSelect.value;
+        const currentPay = payNameSelect.value;
+
+        nameSelect.innerHTML = "";
+        payNameSelect.innerHTML = "";
+
+        state.members.forEach((m) => {
+          const opt1 = document.createElement("option");
+          opt1.value = m;
+          opt1.textContent = m;
+          nameSelect.appendChild(opt1);
+
+          const opt2 = document.createElement("option");
+          opt2.value = m;
+          opt2.textContent = m;
+          payNameSelect.appendChild(opt2);
+        });
+
+        if (current) nameSelect.value = current;
+        if (currentPay) payNameSelect.value = currentPay;
+
+        // If Default exists and no selection, select first
+        if (!nameSelect.value && state.members.length)
+          nameSelect.value = state.members[0];
+        if (!payNameSelect.value && state.members.length)
+          payNameSelect.value = state.members[0];
+      }
+
+      function addEntry() {
+        const date = dateInput.value;
+        const name = nameSelect.value;
+        const liters = parseFloat(litersInput.value || "");
+        const rate = parseFloat(rateInput.value || "");
+        const note = (noteInput.value || "").trim();
+
+        if (!date) return showToast("Date select karo ❌");
+        if (!name) return showToast("Name select karo ❌");
+        if (!isFinite(liters) || liters <= 0)
+          return showToast("Liters sahi डालो ❌");
+        if (!isFinite(rate) || rate <= 0) return showToast("Rate sahi डालो ❌");
+
+        const amount = round2(liters * rate);
+
+        state.entries.push({
+          id: uid(),
+          date,
+          name,
+          liters: round2(liters),
+          rate: round2(rate),
+          amount,
+          note,
+        });
+
+        // clear small fields
+        litersInput.value = "";
+        rateInput.value = "";
+        amountInput.value = "";
+        noteInput.value = "";
+
+        saveState();
+        renderAll();
+        showToast("Entry add ho gayi ✅");
+      }
+
+      function addPayment() {
+        const name = payNameSelect.value;
+        const amt = parseFloat(payAmountInput.value || "");
+        if (!name) return showToast("Name select karo ❌");
+        if (!isFinite(amt) || amt <= 0)
+          return showToast("Paid amount sahi डालो ❌");
+
+        state.payments.push({
+          id: uid(),
+          date: new Date().toISOString().slice(0, 10),
+          name,
+          amount: round2(amt),
+        });
+
+        payAmountInput.value = "";
+        saveState();
+        renderAll();
+        showToast("Payment add ho gaya ✅");
+      }
+
+      function getFilteredData() {
+        const q = (searchInput.value || "").trim().toLowerCase();
+        const month = (monthInput.value || "").trim(); // "YYYY-MM"
+
+        let entries = [...state.entries];
+
+        if (month) {
+          entries = entries.filter((e) => (e.date || "").startsWith(month));
+        }
+        if (q) {
+          entries = entries.filter((e) =>
+            (e.name || "").toLowerCase().includes(q)
+          );
+        }
+
+        // sort
+        entries.sort((a, b) => {
+          if (currentSort.key === "date") {
+            const av = a.date || "";
+            const bv = b.date || "";
+            return currentSort.dir === "asc"
+              ? av.localeCompare(bv)
+              : bv.localeCompare(av);
+          }
+          if (currentSort.key === "name") {
+            const av = (a.name || "").toLowerCase();
+            const bv = (b.name || "").toLowerCase();
+            return currentSort.dir === "asc"
+              ? av.localeCompare(bv)
+              : bv.localeCompare(av);
+          }
+          if (currentSort.key === "amount") {
+            const av = a.amount || 0;
+            const bv = b.amount || 0;
+            return currentSort.dir === "asc" ? av - bv : bv - av;
+          }
+          return 0;
+        });
+
+        return entries;
+      }
+
+      function computeMemberSummary(filteredEntries) {
+        // Member totals from filtered entries
+        const map = new Map(); // name -> {total, paid}
+        state.members.forEach((m) => map.set(m, { total: 0, paid: 0 }));
+
+        filteredEntries.forEach((e) => {
+          if (!map.has(e.name)) map.set(e.name, { total: 0, paid: 0 });
+          map.get(e.name).total += e.amount || 0;
+        });
+
+        // Payments: apply month + search filter similarly for fairness
+        const q = (searchInput.value || "").trim().toLowerCase();
+        const month = (monthInput.value || "").trim();
+
+        let pays = [...state.payments];
+        if (month) pays = pays.filter((p) => (p.date || "").startsWith(month));
+        if (q)
+          pays = pays.filter((p) => (p.name || "").toLowerCase().includes(q));
+
+        pays.forEach((p) => {
+          if (!map.has(p.name)) map.set(p.name, { total: 0, paid: 0 });
+          map.get(p.name).paid += p.amount || 0;
+        });
+
+        const rows = [];
+        map.forEach((v, name) => {
+          const total = round2(v.total);
+          const paid = round2(v.paid);
+          const dues = round2(total - paid);
+          // show only members with some activity under filter
+          if (total !== 0 || paid !== 0) rows.push({ name, total, paid, dues });
+        });
+
+        rows.sort((a, b) => a.name.localeCompare(b.name));
+        return rows;
+      }
+
+      function renderAll() {
+        const filteredEntries = getFilteredData();
+
+        // Active filter tag
+        const parts = [];
+        if (monthInput.value) parts.push(`Month: ${monthInput.value}`);
+        if (searchInput.value.trim())
+          parts.push(`Search: "${searchInput.value.trim()}"`);
+        activeFilterTag.textContent = parts.length
+          ? parts.join(" • ")
+          : "All data";
+
+        renderStats(filteredEntries);
+        renderEntriesTable(filteredEntries);
+
+        const summaryRows = computeMemberSummary(filteredEntries);
+        renderMemberSummary(summaryRows);
+      }
+
+      function renderStats(filteredEntries) {
+        const totalLiters = round2(
+          filteredEntries.reduce((s, e) => s + (e.liters || 0), 0)
+        );
+        const totalAmount = round2(
+          filteredEntries.reduce((s, e) => s + (e.amount || 0), 0)
+        );
+
+        // Payments under same filter rules
+        const q = (searchInput.value || "").trim().toLowerCase();
+        const month = (monthInput.value || "").trim();
+        let pays = [...state.payments];
+        if (month) pays = pays.filter((p) => (p.date || "").startsWith(month));
+        if (q)
+          pays = pays.filter((p) => (p.name || "").toLowerCase().includes(q));
+        const totalPaid = round2(pays.reduce((s, p) => s + (p.amount || 0), 0));
+        const dues = round2(totalAmount - totalPaid);
+
+        const uniqueMembers = new Set(filteredEntries.map((e) => e.name)).size;
+
+        statsBox.innerHTML = `
+        <div class="stat"><div class="k">Total Liters</div><div class="v">${totalLiters} L</div></div>
+        <div class="stat"><div class="k">Total Amount</div><div class="v">₹ ${totalAmount}</div></div>
+        <div class="stat"><div class="k">Total Paid</div><div class="v">₹ ${totalPaid}</div></div>
+        <div class="stat"><div class="k">Dues (Baki)</div><div class="v">${
+          dues >= 0 ? "₹ " + dues : "₹ 0"
+        } ${
+          dues < 0
+            ? "<span class='tag' style='margin-left:8px'>Advance ₹ " +
+              Math.abs(dues) +
+              "</span>"
+            : ""
+        }</div></div>
+      `;
+      }
+
+      function renderEntriesTable(filteredEntries) {
+        entriesTbody.innerHTML = "";
+
+        if (filteredEntries.length === 0) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="7" style="color:var(--muted);padding:16px;">No entries found. Month/Search change karke dekho.</td>`;
+          entriesTbody.appendChild(tr);
+          return;
+        }
+
+        filteredEntries.forEach((e) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+          <td>${e.date || ""}</td>
+          <td><strong>${escapeHtml(e.name || "")}</strong></td>
+          <td>${e.liters}</td>
+          <td>₹ ${e.rate}</td>
+          <td><strong>₹ ${e.amount}</strong></td>
+          <td style="color:var(--muted)">${escapeHtml(e.note || "")}</td>
+          <td style="text-align:right">
+            <button class="mini btn-danger" data-id="${e.id}">Delete</button>
+          </td>
+        `;
+          tr.querySelector("button").addEventListener("click", () =>
+            deleteEntry(e.id)
+          );
+          entriesTbody.appendChild(tr);
+        });
+      }
+
+      function renderMemberSummary(rows) {
+        memberTbody.innerHTML = "";
+
+        if (rows.length === 0) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="4" style="color:var(--muted);padding:16px;">No member activity in current filter.</td>`;
+          memberTbody.appendChild(tr);
+          return;
+        }
+
+        rows.forEach((r) => {
+          const duesTxt =
+            r.dues >= 0 ? `₹ ${r.dues}` : `Advance ₹ ${Math.abs(r.dues)}`;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+          <td><strong>${escapeHtml(r.name)}</strong></td>
+          <td>₹ ${r.total}</td>
+          <td>₹ ${r.paid}</td>
+          <td>${duesTxt}</td>
+        `;
+          memberTbody.appendChild(tr);
+        });
+      }
+
+      function deleteEntry(id) {
+        const before = state.entries.length;
+        state.entries = state.entries.filter((e) => e.id !== id);
+        if (state.entries.length === before) return;
+
+        saveState();
+        renderAll();
+        showToast("Entry delete ✅");
+      }
+
+      function setSort(key) {
+        if (currentSort.key === key) {
+          currentSort.dir = currentSort.dir === "asc" ? "desc" : "asc";
+        } else {
+          currentSort.key = key;
+          currentSort.dir = key === "name" ? "asc" : "desc";
+        }
+        renderAll();
+        showToast(`Sorted by ${key} (${currentSort.dir})`);
+      }
+
+      function exportJSON() {
+        const blob = new Blob([JSON.stringify(state, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "milk-management-backup.json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast("Export downloaded ✅");
+      }
+
+      function importJSON(ev) {
+        const file = ev.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(reader.result);
+            if (
+              !data ||
+              !Array.isArray(data.entries) ||
+              !Array.isArray(data.payments) ||
+              !Array.isArray(data.members)
+            ) {
+              return showToast("Invalid JSON file ❌");
+            }
+            state = data;
+            saveState();
+            refreshMemberSelects();
+            renderAll();
+            showToast("Import success ✅");
+          } catch (e) {
+            showToast("Import failed ❌");
+          } finally {
+            ev.target.value = "";
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function resetAll() {
+        const ok = confirm("Pakka? All data delete ho jayega.");
+        if (!ok) return;
+        state = { members: ["Default"], entries: [], payments: [] };
+        saveState();
+        refreshMemberSelects();
+        renderAll();
+        showToast("All data reset ✅");
+      }
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.style.display = "block";
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => (toastEl.style.display = "none"), 2200);
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+    </script>
+  </body>
+</html>
